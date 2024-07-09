@@ -68,17 +68,17 @@ class DisposisiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SuratMasuk $suratMasuk)
+    public function edit(Disposisi $disposisi)
     {
         //
-        return view('disposisi.edit', compact('suratMasuk'));
+        return view('disposisi.edit', compact('disposisi'));
         
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SuratMasuk $suratMasuk)
+    public function update(Request $request, Disposisi $disposisi)
     {
         //
         $validated = $request->validate([
@@ -91,10 +91,10 @@ class DisposisiController extends Controller
         ]);
 
         try {
-            $suratMasuk->disposisi()->update($request->all());
-            return redirect()->route('surat-masuk.index')->with('success', 'Disposisi Berhasil Diubah');
+            $disposisi->update($request->all());
+            return redirect()->route('disposisi.index')->with('success', 'Disposisi Berhasil Diubah');
         } catch (\Throwable $th) {
-            return redirect()->route('surat-masuk.index')->with('error', 'Disposisi gagal Diubah'. $th);
+            return redirect()->route('disposisi.index')->with('error', 'Disposisi gagal Diubah'. $th);
         }
     }
 

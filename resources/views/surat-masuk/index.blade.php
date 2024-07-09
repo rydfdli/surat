@@ -10,7 +10,11 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
+          
+          @if (auth()->user()->role == 'admin')
             <a href="{{ route('surat-masuk.create') }}" class="btn btn-primary">Tambah Surat Masuk</a>
+          @endif
+
             @if (session('success'))
               <div class="alert alert-success my-2" role="alert">
                 {{ session('success') }}
@@ -51,6 +55,7 @@
                                 @endif
                             </td>
                             <td>
+                              @if (auth()->user()->role == 'admin')
                                 <a href="{{ route('surat-masuk.show', $surat->id) }}" class="btn btn-info btn-sm my-2">Detail</a>
                                 <a href="{{ route('surat-masuk.edit', $surat->id) }}" class="btn btn-warning btn-sm my-2">Edit</a>
                                 <form action="{{ route('surat-masuk.destroy', $surat->id) }}" method="POST" style="display: inline-block;">
@@ -58,12 +63,18 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
                                 </form>
-                                @if (!$surat->status_disposisi)
-                                    <a href="{{ route('surat-masuk.disposisi.create', $surat->id)}}" class="btn btn-primary btn-sm">Disposisi</a>
                                 @else
-                                    
-                                @endif
-        
+                                <a href="{{ route('surat-masuk.show', $surat->id) }}" class="btn btn-info btn-sm my-2">Detail</a>
+                                 @if ($surat->status_disposisi == 0)
+                                  <a href="{{ route('surat-masuk.disposisi.create', $surat->id)}}" class="btn btn-primary btn-sm">Disposisi</a>
+                                 @endif
+                              @endif
+
+
+                              
+                              {{-- @if (auth()->user()->role == 'superadmin' && $surat->status_disposisi == 0)
+                              @endif --}}
+
                             </td>
                         </tr>
                     @endforeach

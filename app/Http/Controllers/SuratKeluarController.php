@@ -42,7 +42,11 @@ class SuratKeluarController extends Controller
             'file_path' => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
-        $validated['file_path'] = $request->file('file_path')->store('public/surat-keluar');
+        if ($request->hasFile('file_path')) {
+            $validated['file_path'] = $request->file('file_path')->store('public/surat-keluar');
+        } else {
+            $validated['file_path'] = null;
+        }
 
         try {
             SuratKeluar::create($validated);

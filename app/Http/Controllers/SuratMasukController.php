@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function Ramsey\Uuid\v1;
 
@@ -117,4 +118,5 @@ class SuratMasukController extends Controller
         $suratMasuk->delete();
         return redirect()->route('surat-masuk.index')->with('success', 'Surat Masuk Berhasilh Dihapus');
     }
+
 }

@@ -11,24 +11,44 @@ use App\Http\Controllers\DisposisiController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratKeluarController;
 
-Route::get('/', function () {
-    $suratMasukCount = SuratMasuk::count();
-    $suratKeluarCount = SuratKeluar::count();
-    $disposisiCount = Disposisi::count();
-    return view('dashboard', compact('suratMasukCount', 'suratKeluarCount', 'disposisiCount'));
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        $suratMasukCount = SuratMasuk::count();
+        $suratKeluarCount = SuratKeluar::count();
+        $disposisiCount = Disposisi::count();
+        return view('dashboard', compact('suratMasukCount', 'suratKeluarCount', 'disposisiCount'));
+    });
+    
+    Route::get('/dashboard', function () {
+        $suratMasukCount = SuratMasuk::count();
+        $suratKeluarCount = SuratKeluar::count();
+        $disposisiCount = Disposisi::count();
+        return view('dashboard', compact('suratMasukCount', 'suratKeluarCount', 'disposisiCount'));
+    })->name('dashboard');
+    
+    Route::resource('surat-masuk', SuratMasukController::class);
+    Route::resource('surat-masuk.disposisi', DisposisiController::class)->shallow();
+    Route::resource('surat-keluar', SuratKeluarController::class);
+    Route::resource('disposisi', DisposisiController::class);
+    Route::resource('reports', ReportController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('settings', SettingController::class);
+
+    Route::get('laporan/surat-masuk', [ReportController::class, 'suratMasuk'])->name('reports.surat-masuk');
+    Route::get('laporan/surat-keluar', [ReportController::class, 'suratKeluar'])->name('reports.surat-keluar');
+    Route::get('laporan/disposisi', [ReportController::class, 'disposisi'])->name('reports.disposisi');
+
+
 });
 
-Route::get('/dashboard', function () {
-    $suratMasukCount = SuratMasuk::count();
-    $suratKeluarCount = SuratKeluar::count();
-    $disposisiCount = Disposisi::count();
-    return view('dashboard', compact('suratMasukCount', 'suratKeluarCount', 'disposisiCount'));
-})->name('dashboard');
+Route::middleware('guest')->group(function () {
+    Route::get('login', function () {
+        return view('auth.login');
+    })->name('login');
+    
+    Route::post('login', [UserController::class, 'login'])->name('login.action');
+});
 
-Route::resource('surat-masuk', SuratMasukController::class);
-Route::resource('surat-masuk.disposisi', DisposisiController::class)->shallow();
-Route::resource('surat-keluar', SuratKeluarController::class);
-Route::resource('disposisi', DisposisiController::class);
-Route::resource('reports', ReportController::class);
-Route::resource('users', UserController::class);
-Route::resource('settings', SettingController::class);
+Route::get('logout', [UserController::class, 'logout'])->name('logout');
+
+// Route::post('logout', [UserController::class, 'logout'])->name('logout');

@@ -33,7 +33,9 @@
                   <th>Isi</th>
                   <th>Sifat</th>
                   <th>Batas Waktu</th>
-                  <th>Aksi</th>
+                  @if (auth()->user()->role == 'superadmin')
+                    <th>Aksi</th>
+                  @endif
                 </tr>
                 </thead>
                 <tbody>
@@ -45,15 +47,20 @@
                             <td>{{ $disposisi->tujuan }}</td>
                             <td>{{ $disposisi->isi_disposisi }}</td>
                             <td>
-                              @if ($disposisi->sifat_disposisi === 'Biasa')
-                                  <span class="badge badge-primary">{{ $disposisi->sifat_disposisi }}</span>
-                              @elseif ($disposisi->sifat_disposisi === 'Penting')
-                                  <span class="badge badge-warning">{{ $disposisi->sifat_disposisi }}</span>
-                              @elseif ($disposisi->sifat_disposisi === 'Sangat Penting')
-                                  <span class="badge badge-danger">{{ $disposisi->sifat_disposisi }}</span>  
+                              @if ($disposisi->sifat_disposisi === '1')
+                                  <span class="badge badge-primary">Biasa</span>
+                              @elseif ($disposisi->sifat_disposisi === '2')
+                                  <span class="badge badge-warning">Penting</span>
+                              @elseif ($disposisi->sifat_disposisi === '3')
+                                  <span class="badge badge-danger">Sangat Penting</span>  
                               @endif
-                          </td>
+                            </td>
                             <td>{{ $disposisi->batas_waktu }}</td>
+                            @if (auth()->user()->role == 'superadmin')
+                              <td>
+                                  <a href="{{ route('disposisi.edit', $disposisi->id) }}" class="btn btn-warning btn-sm my-2">Edit</a>
+                              </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

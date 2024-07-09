@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -12,7 +15,8 @@ class SettingController extends Controller
     public function index()
     {
         //
-        return view('settings.index');
+        $dataInstansi = Setting::first();
+        return view('settings.index', compact('dataInstansi'));
     }
 
     /**
@@ -42,9 +46,10 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+        $dataInstansi = Setting::first();
+        return view('settings.edit', compact('dataInstansi'));
     }
 
     /**
@@ -52,7 +57,31 @@ class SettingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        
+        $validated = $request->validate([
+            'nama_instansi' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'nomor_telepon' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'website' => 'required|string|max:255',
+            'logo' => 'nullable|mimes:jpg,jpeg,png|max:5120',
+        ]);
+
+        $dataInstansi = Setting::find($id);
+       
+        if($request->hasFile('logo')){
+            if ($dataInstansi->logo && File::exists(public_path('adminlte/dist/img/'.$dataInstansi->logo))) {
+                File::delete(public_path('adminlte/dist/img/'.$dataInstansi->logo));
+            } 
+            $filename = time() . '.' . $request->file('logo')->getClientOriginalExtension();
+            $request->file('logo')->move(public_path('adminlte/dist/img'), $filename);
+            $validated['logo'] = $filename;
+        }
+
+        $dataInstansi->update($validated);
+        return redirect()->route('settings.index')->with('success', 'Data instansi berhasil diperbarui');
+
     }
 
     /**

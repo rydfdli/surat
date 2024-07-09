@@ -10,7 +10,9 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <a href="{{ route('surat-keluar.create') }}" class="btn btn-primary">Tambah Surat Keluar</a>
+            @if (auth()->user()->role == 'admin')
+              <a href="{{ route('surat-keluar.create') }}" class="btn btn-primary">Tambah Surat Keluar</a>
+            @endif
             @if (session('success'))
               <div class="alert alert-success my-2" role="alert">
                 {{ session('success') }}
@@ -46,12 +48,14 @@
                             <td>{{ $surat->tanggal_keluar }}</td>
                             <td>
                                 <a href="{{ route('surat-keluar.show', $surat->id) }}" class="btn btn-info btn-sm">Detail</a>
+                                @if (auth()->user()->role == 'admin')
                                 <a href="{{ route('surat-keluar.edit', $surat->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                 <form action="{{ route('surat-keluar.destroy', $surat->id) }}" method="POST" style="display: inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
                                 </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('perihal');
             $table->string('tujuan');
             $table->string('isi');
-            $table->string('file_path');
+            $table->string('file_path')->nullable();
             $table->date('tanggal_keluar');
             $table->timestamps();
         });

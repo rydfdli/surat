@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Disposisi;
+use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -15,9 +18,36 @@ class ReportController extends Controller
         return view('reports.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function suratMasuk(){
+        $suratMasuk = SuratMasuk::all();
+        $totalSuratMasuk = $suratMasuk->count();
+        $suratMasukPerMounth = $suratMasuk->groupBy(function ($date) {
+            return \Carbon\Carbon::parse($date->tanggal_masuk)->format('F');
+        });
+
+        return view('reports.surat-masuk', compact('suratMasuk', 'totalSuratMasuk', 'suratMasukPerMounth'));
+    }
+
+    public function suratKeluar(){
+        $suratKeluar = SuratKeluar::all();
+        $totalSuratKeluar = $suratKeluar->count();
+        $suratKeluarPerMounth = $suratKeluar->groupBy(function ($date) {
+            return \Carbon\Carbon::parse($date->tanggal_keluar)->format('F');
+        });
+
+        return view('reports.surat-keluar', compact('suratKeluar', 'totalSuratKeluar', 'suratKeluarPerMounth'));
+    }
+
+    public function disposisi(){
+        $disposisi = Disposisi::all();
+        $totalDisposisi = $disposisi->count();
+        $disposisiPerMounth = $disposisi->groupBy(function ($date) {
+            return \Carbon\Carbon::parse($date->tanggal_disposisi)->format('F');
+        });
+
+        return view('reports.disposisi', compact('disposisi', 'totalDisposisi', 'disposisiPerMounth'));
+    }
+
     public function create()
     {
         //
