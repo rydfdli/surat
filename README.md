@@ -1,6 +1,6 @@
 # Sistem Informasi Surat Masuk dan Keluar
 
-Sistem Informasi Surat Masuk dan Keluar adalah aplikasi sederhana untuk mengelola surat masuk dan keluar pada suatu organisasi. Aplikasi ini dibangun menggunakan [teknologi/stack yang digunakan] dan berfokus pada kebutuhan dasar manajemen surat untuk meningkatkan efisiensi dalam proses administratif.
+Sistem Informasi Surat Masuk dan Keluar adalah aplikasi sederhana untuk mengelola surat masuk dan keluar pada suatu organisasi. Aplikasi ini dibangun menggunakan Laravel dan berfokus pada kebutuhan dasar manajemen surat untuk meningkatkan efisiensi dalam proses administratif.
 
 ## Fitur Utama
 
